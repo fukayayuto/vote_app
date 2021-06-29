@@ -3,12 +3,13 @@
 namespace controller\register;
 
 use lib\Auth;
-use model\UserModel;
 use lib\Msg;
+use model\UserModel;
 
 function get()
 {
-    require_once  SOURCE_BASE . 'views/register.php';
+
+    \view\register\index();
 }
 
 function post()
@@ -18,12 +19,12 @@ function post()
     $user->pwd = get_param('pwd', '');
     $user->nickname = get_param('nickname', '');
 
+    if (Auth::regist($user)) {
 
-    $result = Auth::register($user);
-
-    if ($result) {
-        echo '登録成功';
+        Msg::push(Msg::INFO, "{$user->nickname}さん、ようこそ。");
+        redirect(GO_HOME);
     } else {
-        echo '登録失敗';
+
+        redirect(GO_REFERER);
     }
 }

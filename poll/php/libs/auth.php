@@ -41,7 +41,7 @@ class Auth
         return $is_success;
     }
 
-    public static function register($user)
+    public static function regist($user)
     {
         try {
             if (!($user->isValidId()
@@ -74,5 +74,46 @@ class Auth
         }
 
         return $is_success;
+    }
+
+    public static function isLogin()
+    {
+        try {
+
+            $user = UserModel::getSession();
+        } catch (Throwable $e) {
+
+            UserModel::clearSession();
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            return false;
+        }
+
+        if (isset($user)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function logout()
+    {
+        try {
+
+            UserModel::clearSession();
+        } catch (Throwable $e) {
+
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function requireLogin()
+    {
+        if (!static::isLogin()) {
+            Msg::push(Msg::ERROR, 'ログインしてください。');
+            redirect('login');
+        }
     }
 }
