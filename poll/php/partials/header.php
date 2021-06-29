@@ -10,3 +10,10 @@
 </head>
 
 <body>
+    <?php
+
+    use lib\Auth;
+    use lib\Msg;
+
+    Msg::flush();
+    ?>
