@@ -6,6 +6,7 @@ use lib\Msg;
 
 class UserModel extends AbstractModel
 {
+
     public string $id;
     public string $pwd;
     public string $nickname;

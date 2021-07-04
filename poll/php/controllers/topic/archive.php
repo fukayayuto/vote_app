@@ -14,7 +14,10 @@ function get()
 
     $user = UserModel::getSession();
 
+
     $topics = TopicQuery::fetchByUserId($user);
+
+
 
     if ($topics === false) {
         Msg::push(Msg::ERROR, 'ログインしてください。');

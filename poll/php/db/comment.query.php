@@ -19,8 +19,8 @@ class CommentQuery
         $sql = '
         select 
             c.*, u.nickname 
-        from comments c
-        inner join users u 
+        from vote.comments c
+        inner join vote.users u 
             on c.user_id = u.id 
         where c.topic_id = :id
             and c.body != ""
@@ -36,19 +36,29 @@ class CommentQuery
         return $result;
     }
 
+    public static function insert($comment)
+    {
 
-    // public static function insert($user) {
+        if (!($comment->isValidTopicId()
+            * $comment->isValidBody()
+            * $comment->isValidAgree())) {
+            return false;
+        }
 
-    //     $db = new DataSource;
-    //     $sql = 'insert into users(id, pwd, nickname) values (:id, :pwd, :nickname)';
+        $db = new DataSource;
 
-    //     $user->pwd = password_hash($user->pwd, PASSWORD_DEFAULT);
+        $sql = '
+        insert into vote.comments
+            (topic_id, agree, body, user_id)
+        values
+            (:topic_id, :agree, :body, :user_id)
+        ';
 
-    //     return $db->execute($sql, [
-    //         ':id' => $user->id,
-    //         ':pwd' => $user->pwd,
-    //         ':nickname' => $user->nickname,
-    //     ]);
-
-    // }
+        return $db->execute($sql, [
+            ':topic_id' => $comment->topic_id,
+            ':agree' => $comment->agree,
+            ':body' => $comment->body,
+            ':user_id' => $comment->user_id,
+        ]);
+    }
 }

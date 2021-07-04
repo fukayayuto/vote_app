@@ -23,43 +23,53 @@ class DataSource
 
     public function select($sql = "", $params = [], $type = '', $cls = '')
     {
+
         $stmt = $this->executeSql($sql, $params);
+
         if ($type === static::CLS) {
+
             return $stmt->fetchAll(PDO::FETCH_CLASS, $cls);
         } else {
+
             return $stmt->fetchAll();
         }
     }
 
     public function execute($sql = "", $params = [])
     {
+
         $this->executeSql($sql, $params);
         return  $this->sqlResult;
     }
 
     public function selectOne($sql = "", $params = [], $type = '', $cls = '')
     {
+
         $result = $this->select($sql, $params, $type, $cls);
         return count($result) > 0 ? $result[0] : false;
     }
 
     public function begin()
     {
+
         $this->conn->beginTransaction();
     }
 
     public function commit()
     {
+
         $this->conn->commit();
     }
 
     public function rollback()
     {
+
         $this->conn->rollback();
     }
 
     private function executeSql($sql, $params)
     {
+
         $stmt = $this->conn->prepare($sql);
         $this->sqlResult = $stmt->execute($params);
         return $stmt;
