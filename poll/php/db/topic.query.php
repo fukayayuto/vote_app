@@ -32,8 +32,8 @@ class TopicQuery
         $sql = '
         select 
             t.*, u.nickname 
-        from topics t 
-        inner join users u 
+        from vote.topics t 
+        inner join vote.users u 
             on t.user_id = u.id 
         where t.del_flg != 1
             and u.del_flg != 1
@@ -57,8 +57,8 @@ class TopicQuery
         $sql = '
         select 
             t.*, u.nickname 
-        from topics t 
-        inner join users u 
+        from vote.topics t 
+        inner join vote.users u 
             on t.user_id = u.id 
         where t.id = :id
             and t.del_flg != 1
