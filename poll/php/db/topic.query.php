@@ -98,7 +98,7 @@ class TopicQuery
 
         $db = new DataSource;
         $sql = '
-        select count(1) from vote.topics t 
+        select count(1) as count from vote.topics t 
         where t.id = :topic_id
             and t.user_id = :user_id
             and t.del_flg != 1;
@@ -108,6 +108,12 @@ class TopicQuery
             ':topic_id' => $topic_id,
             ':user_id' => $user->id,
         ]);
+
+        if (!empty($result) && $result['count'] != 0) {
+            return true;
+        } else {
+            return false;
+        }
 
         return $result;
     }
